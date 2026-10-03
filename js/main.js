@@ -23,7 +23,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
 
   /* ---------- Aparición suave ---------- */
-  const targets = document.querySelectorAll('.section-head, .session-card, .feature, .about-text, .about-media, .review, .banner-text, .cta-content');
+  const targets = document.querySelectorAll('.section-head, .session-card, .gallery-item, .feature, .about-text, .about-media, .review, .banner-text, .cta-content');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -142,90 +142,168 @@
   else setTimeout(() => showBanner(false), 600);
 
   /* =========================================================
-     Formulario de contacto (Web3Forms)
+     Reservas por WhatsApp
+     El formulario NO envía datos a ningún servidor: compone el
+     mensaje y abre WhatsApp para que la persona lo envíe.
      ========================================================= */
-  const form = document.getElementById('contact-form');
-  if (form) {
-    const status = form.querySelector('.form-status');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const WA_URL = 'https://wa.me/34686806207';
+  const WA_NUMBER = '34686806207';
+  const SESIONES = ['Embarazo', 'Newborn', 'Bebés / Smash cake', 'Familia', 'Comunión', 'Otra / No lo tengo claro'];
+  const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.09.81.83-3-.2-.31a8.2 8.2 0 1 1 6.94 3.83Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.15.16-.29.18-.54.06a6.7 6.7 0 0 1-3.36-2.94c-.25-.44.25-.4.72-1.34.08-.16.04-.3-.02-.43l-.76-1.83c-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 0 0-.66.31 2.77 2.77 0 0 0-.86 2.06 4.8 4.8 0 0 0 1 2.55 11 11 0 0 0 4.22 3.73c1.57.68 2.19.74 2.98.62.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
 
-    const setError = (el, msg) => {
-      const wrap = el.closest('.field, .check');
-      if (!wrap) return;
-      wrap.classList.toggle('has-error', !!msg);
-      let m = wrap.querySelector('.error-msg');
-      if (msg && wrap.classList.contains('field')) {
-        if (!m) { m = document.createElement('span'); m.className = 'error-msg'; wrap.appendChild(m); }
-        m.textContent = msg;
-      } else if (m) m.remove();
-      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
-    };
-
-    const messageFor = (el) => {
-      if (el.validity.valueMissing) return el.type === 'checkbox' ? 'Debes aceptar la política de privacidad.' : 'Este campo es obligatorio.';
-      if (el.validity.typeMismatch && el.type === 'email') return 'Revisa el email, parece que no es correcto.';
-      if (el.validity.patternMismatch) return 'Revisa el teléfono (mínimo 9 dígitos).';
-      return '';
-    };
-
-    form.querySelectorAll('input, select, textarea').forEach((el) => {
-      if (el.type === 'hidden' || el.classList.contains('hp')) return;
-      el.addEventListener('blur', () => { if (el.value || el.type === 'checkbox') setError(el, messageFor(el)); });
-      el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') setError(el, messageFor(el)); });
-      el.addEventListener('change', () => { if (el.getAttribute('aria-invalid') === 'true') setError(el, messageFor(el)); });
+  let formCount = 0;
+  const buildForm = () => {
+    const id = `bk${++formCount}`;
+    const form = document.createElement('form');
+    form.className = 'contact-form booking-form';
+    form.noValidate = true;
+    form.innerHTML = `
+      <div class="field">
+        <label for="${id}-nombre">Tu nombre *</label>
+        <input id="${id}-nombre" name="nombre" type="text" autocomplete="name" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="${id}-sesion">Tipo de sesión *</label>
+          <select id="${id}-sesion" name="sesion" required>
+            <option value="" selected disabled>Elige una opción</option>
+            ${SESIONES.map((o) => `<option>${o}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label for="${id}-fecha">Fecha aproximada</label>
+          <input id="${id}-fecha" name="fecha" type="text" placeholder="Ej.: parto previsto en marzo">
+        </div>
+      </div>
+      <div class="field">
+        <label for="${id}-msg">Cuéntame un poco más</label>
+        <textarea id="${id}-msg" name="mensaje" rows="4" placeholder="Número de personas, ideas, dudas…"></textarea>
+      </div>
+      <label class="check">
+        <input type="checkbox" name="privacidad" required>
+        <span>He leído y acepto la <a href="politica-privacidad.html" target="_blank">política de privacidad</a>. *</span>
+      </label>
+      <button type="submit" class="btn btn-wa">${WA_ICON}<span>Enviar por WhatsApp</span></button>
+      <p class="form-note">Se abrirá WhatsApp con tu mensaje preparado. La web no guarda ningún dato.</p>`;
+    form.addEventListener('submit', onSubmit);
+    form.querySelectorAll('[required]').forEach((el) => {
+      const evt = el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input';
+      el.addEventListener(evt, () => { if (el.getAttribute('aria-invalid') === 'true') setError(el, messageFor(el)); });
     });
+    return form;
+  };
 
-    form.addEventListener('submit', async (e) => {
+  const messageFor = (el) => {
+    if (!el.validity.valueMissing) return '';
+    if (el.type === 'checkbox') return 'Debes aceptar la política de privacidad.';
+    if (el.tagName === 'SELECT') return 'Elige el tipo de sesión.';
+    return 'Este campo es obligatorio.';
+  };
+  const setError = (el, msg) => {
+    const wrap = el.closest('.field, .check');
+    if (!wrap) return;
+    wrap.classList.toggle('has-error', !!msg);
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    let m = wrap.querySelector('.error-msg');
+    if (msg && wrap.classList.contains('field')) {
+      if (!m) { m = document.createElement('span'); m.className = 'error-msg'; wrap.appendChild(m); }
+      m.textContent = msg;
+    } else if (m) m.remove();
+  };
+
+  function onSubmit(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    let first = null;
+    form.querySelectorAll('[required]').forEach((el) => {
+      const msg = messageFor(el);
+      setError(el, msg);
+      if (msg && !first) first = el;
+    });
+    if (first) { first.focus(); return; }
+
+    const d = Object.fromEntries(new FormData(form));
+    const lines = [
+      `Hola Bárbara, soy ${d.nombre.trim()}. Me gustaría información para una sesión de fotos.`,
+      '',
+      `• Tipo de sesión: ${d.sesion}`,
+    ];
+    if (d.fecha.trim()) lines.push(`• Fecha aproximada: ${d.fecha.trim()}`);
+    if (d.mensaje.trim()) lines.push('', d.mensaje.trim());
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+
+    const win = window.open(url, '_blank', 'noopener');
+    if (!win) window.location.href = url;
+    form.reset();
+    if (dialog?.open) dialog.close();
+  }
+
+  // Formulario fijo (página de contacto)
+  document.querySelectorAll('[data-booking-inline]').forEach((slot) => slot.appendChild(buildForm()));
+
+  // Ventana emergente para todos los botones de reserva / WhatsApp
+  const dialog = document.createElement('dialog');
+  dialog.className = 'booking-dialog';
+  dialog.setAttribute('aria-labelledby', 'booking-title');
+  dialog.innerHTML = `
+    <button type="button" class="dialog-close" aria-label="Cerrar">&times;</button>
+    <p class="eyebrow">Reserva tu sesión</p>
+    <h2 id="booking-title">Cuéntame qué necesitas</h2>
+    <p class="form-intro">Rellena estos datos y te llevo a WhatsApp con el mensaje listo para enviar.</p>`;
+  dialog.appendChild(buildForm());
+  document.body.appendChild(dialog);
+  const closeDialog = () => dialog.close();
+  dialog.querySelector('.dialog-close').addEventListener('click', closeDialog);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) closeDialog(); });
+  dialog.addEventListener('close', () => document.body.classList.remove('dialog-open'));
+
+  document.querySelectorAll('[data-booking]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      if (typeof dialog.showModal !== 'function') return; // navegador muy antiguo: va directo a WhatsApp
       e.preventDefault();
-      status.className = 'form-status';
-      status.textContent = '';
+      setMenu(false);
+      dialog.showModal();
+      document.body.classList.add('dialog-open');
+      setTimeout(() => dialog.querySelector('input[name="nombre"]')?.focus(), 60);
+    });
+  });
 
-      let firstInvalid = null;
-      form.querySelectorAll('[required]').forEach((el) => {
-        const msg = messageFor(el);
-        setError(el, msg);
-        if (msg && !firstInvalid) firstInvalid = el;
-      });
-      if (firstInvalid) { firstInvalid.focus(); return; }
-
-      if (form.botcheck.checked) return; // bot
-
-      const key = form.access_key.value;
-      if (!key || key.startsWith('TU_')) {
-        status.classList.add('err');
-        status.innerHTML = `El formulario aún no está activado. Escríbeme por <a href="${WA_URL}" target="_blank" rel="noopener">WhatsApp</a> mientras tanto.`;
-        return;
-      }
-
-      const data = Object.fromEntries(new FormData(form));
-      data.subject = `Nueva consulta: ${data.sesion} · ${data.nombre}`;
-      data.replyto = data.email;
-      delete data.privacidad;
-      delete data.botcheck;
-
-      submitBtn.disabled = true;
-      const original = submitBtn.textContent;
-      submitBtn.textContent = 'Enviando…';
-
-      try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(data),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) throw new Error(json.message || 'Error');
-        form.reset();
-        status.classList.add('ok');
-        status.textContent = '¡Gracias! He recibido tu mensaje y te responderé muy pronto.';
-      } catch {
-        status.classList.add('err');
-        status.innerHTML = `No se ha podido enviar. Inténtalo de nuevo o escríbeme por <a href="${WA_URL}" target="_blank" rel="noopener">WhatsApp</a>.`;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = original;
-      }
+  /* ---------- Visor de fotos de la galería ---------- */
+  const items = [...document.querySelectorAll('[data-lightbox]')];
+  if (items.length) {
+    const lb = document.createElement('dialog');
+    lb.className = 'lightbox';
+    lb.innerHTML = `
+      <button type="button" class="lb-close" aria-label="Cerrar">&times;</button>
+      <button type="button" class="lb-prev" aria-label="Foto anterior">&#8249;</button>
+      <img alt="">
+      <button type="button" class="lb-next" aria-label="Foto siguiente">&#8250;</button>`;
+    document.body.appendChild(lb);
+    const lbImg = lb.querySelector('img');
+    let current = 0;
+    const show = (i) => {
+      current = (i + items.length) % items.length;
+      lbImg.src = items[current].href;
+      lbImg.alt = items[current].querySelector('img')?.alt || '';
+    };
+    items.forEach((a, i) => a.addEventListener('click', (e) => {
+      if (typeof lb.showModal !== 'function') return;
+      e.preventDefault(); show(i); lb.showModal();
+    }));
+    lb.querySelector('.lb-close').addEventListener('click', () => lb.close());
+    lb.querySelector('.lb-prev').addEventListener('click', () => show(current - 1));
+    lb.querySelector('.lb-next').addEventListener('click', () => show(current + 1));
+    lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+    lb.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+    let x0 = null;
+    lb.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      x0 = null;
     });
   }
 })();

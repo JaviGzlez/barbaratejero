@@ -9,7 +9,7 @@ Sitio estático en HTML, CSS y JavaScript, sin dependencias ni `npm install`.
 
 ```
 ├── index.html                 Inicio
-├── contacto.html              Formulario + datos de contacto + mapa
+├── contacto.html              Formulario de WhatsApp + datos de contacto + mapa
 ├── aviso-legal.html           Textos legales
 ├── politica-privacidad.html
 ├── politica-cookies.html
@@ -29,14 +29,11 @@ Sitio estático en HTML, CSS y JavaScript, sin dependencias ni `npm install`.
 
 VS Code → extensión **Live Server** → clic derecho en `index.html` → *Open with Live Server*.
 
-## Activar el formulario (Web3Forms, gratis)
+## Reservas por WhatsApp
 
-1. Entra en https://web3forms.com, escribe **hola@barbaratejerofotografia.es** y pulsa *Create Access Key*.
-2. Te llega la clave por email a ese buzón.
-3. En `contacto.html` sustituye `TU_ACCESS_KEY_DE_WEB3FORMS` por la clave.
-4. `git push` y listo: los mensajes llegarán a ese email (con *responder* directo al cliente).
-
-Mientras no se ponga la clave, el formulario avisa e invita a escribir por WhatsApp.
+Todos los botones "Reserva tu sesión" / "Escríbeme" (atributo `data-booking`) abren una ventana con un formulario corto.
+Al enviarlo se abre WhatsApp (686 80 62 07) con el mensaje ya redactado. La página de contacto tiene el mismo formulario fijo.
+No se envía ni guarda nada en servidores. El número está en `js/main.js` (`WA_NUMBER`).
 
 ## Cookies
 
@@ -44,22 +41,14 @@ La web no usa cookies de terceros: las fuentes están en local y los mapas/redes
 El aviso guarda la elección en `localStorage` (`bt_cookie_consent`, 12 meses).
 Si en el futuro se añade Google Analytics, va dentro de `loadAnalytics()` en `js/main.js` (solo se carga si se acepta) y hay que añadirlo a la tabla de `politica-cookies.html`.
 
-## Sustituir las fotos
+## Fotos
 
-Guarda la foto real en `assets/img/` (mejor `.webp` o `.jpg` de 200–400 KB) y cambia el `src` en `index.html`:
-
-| Placeholder           | Uso                          | Medida      |
-|-----------------------|------------------------------|-------------|
-| hero.svg              | Cabecera principal           | 1200×900    |
-| sesion-*.svg          | Tarjetas de sesiones (×5)    | 600×760     |
-| banner-newborn.svg    | Banner "Pequeños detalles"   | 1600×600    |
-| sobre-mi.svg          | Sección Sobre mí             | 1000×800    |
-| cta-manos.svg         | Banner final                 | 1600×400    |
+Las fotos reales están en `assets/img/fotos/` en WebP, en dos tamaños (`-800` y `-1600`).
+Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg`, vertical 4:5) y la foto de Bárbara en "Sobre mí" (`sobre-mi.svg`).
 
 ## Pendiente
 
 - [ ] Dirección completa del estudio (aviso legal y privacidad: buscar `Jerez de la Frontera (Cádiz), España`)
 - [ ] Confirmar titular legal (`Bárbara Tejero Perea`)
-- [ ] Clave de Web3Forms
-- [ ] Fotos reales
+- [ ] Fotos de embarazo, bebés, comuniones y de Bárbara
 - [ ] Páginas: Newborn, Embarazo, Bebés, Familia, Comuniones, Galería, Blog
