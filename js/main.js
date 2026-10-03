@@ -83,20 +83,19 @@
   banner.setAttribute('aria-live', 'polite');
   banner.setAttribute('aria-labelledby', 'cookie-title');
   banner.innerHTML = `
-    <h2 id="cookie-title">Tu privacidad</h2>
-    <p>Usamos únicamente almacenamiento técnico necesario para que la web funcione y recordar tu elección. Si aceptas, también podremos usar cookies de análisis para mejorar la web. Más información en la <a href="politica-cookies.html">política de cookies</a>.</p>
+    <p id="cookie-title">Usamos solo almacenamiento técnico necesario y, si lo aceptas, cookies de análisis. <a href="politica-cookies.html">Más información</a>.</p>
     <div class="cookie-prefs" id="cookie-prefs">
       <div class="pref">
-        <div><strong>Necesarias</strong><span>Imprescindibles para el funcionamiento. Siempre activas.</span></div>
+        <div><strong>Necesarias</strong><span>Siempre activas</span></div>
         <label class="switch"><input type="checkbox" checked disabled aria-label="Cookies necesarias"><i></i></label>
       </div>
       <div class="pref">
-        <div><strong>Análisis</strong><span>Estadísticas anónimas de visitas.</span></div>
+        <div><strong>Análisis</strong><span>Estadísticas anónimas</span></div>
         <label class="switch"><input type="checkbox" id="cookie-analytics" aria-label="Cookies de análisis"><i></i></label>
       </div>
     </div>
     <div class="cookie-actions">
-      <button type="button" class="btn btn-primary" data-cookie="accept">Aceptar todas</button>
+      <button type="button" class="btn btn-primary" data-cookie="accept">Aceptar</button>
       <button type="button" class="btn btn-outline" data-cookie="reject">Rechazar</button>
       <button type="button" class="btn btn-outline" data-cookie="config" aria-controls="cookie-prefs" aria-expanded="false">Configurar</button>
     </div>`;
@@ -110,7 +109,7 @@
     const c = readConsent();
     analyticsInput.checked = !!c?.analytics;
     banner.classList.toggle('show-prefs', withPrefs);
-    configBtn.textContent = withPrefs ? 'Guardar selección' : 'Configurar';
+    configBtn.textContent = withPrefs ? 'Guardar' : 'Configurar';
     configBtn.setAttribute('aria-expanded', String(withPrefs));
     banner.classList.add('is-visible');
     document.body.classList.add('cookie-open');

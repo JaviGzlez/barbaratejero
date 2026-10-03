@@ -44,11 +44,11 @@ Si en el futuro se añade Google Analytics, va dentro de `loadAnalytics()` en `j
 ## Fotos
 
 Las fotos reales están en `assets/img/fotos/` en WebP, en dos tamaños (`-800` y `-1600`).
-Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg`, vertical 4:5) y la foto de Bárbara en "Sobre mí" (`sobre-mi.svg`).
+Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg`, vertical 4:5).
 
 ## Pendiente
 
 - [ ] Dirección completa del estudio (aviso legal y privacidad: buscar `Jerez de la Frontera (Cádiz), España`)
 - [ ] Confirmar titular legal (`Bárbara Tejero Perea`)
-- [ ] Fotos de embarazo, bebés, comuniones y de Bárbara
+- [ ] Fotos de embarazo, bebés y comuniones
 - [ ] Páginas: Newborn, Embarazo, Bebés, Familia, Comuniones, Galería, Blog
