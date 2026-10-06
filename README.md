@@ -12,6 +12,7 @@ Sitio estático en HTML, CSS y JavaScript, sin dependencias ni `npm install`.
 ├── contacto.html              Formulario de WhatsApp + datos de contacto + mapa
 ├── embarazo.html, newborn.html, seguimiento-bebe.html, smash-cake.html,
 │   familia.html, comuniones.html, navidad.html   Páginas de sesión (con preguntas frecuentes)
+├── blog.html + blog-*.html    Blog: un artículo por sesión
 ├── aviso-legal.html           Textos legales
 ├── politica-privacidad.html
 ├── politica-cookies.html

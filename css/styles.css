@@ -272,6 +272,48 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .session-intro-text strong { color: var(--brown); font-weight: 600; }
 .cta-text { color: var(--brown-soft); margin: -4px auto 20px; max-width: 46ch; }
 
+/* ---------- Blog ---------- */
+.blog-list { padding-top: clamp(16px, 3vw, 32px); }
+.posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.5vw, 30px); }
+.post-card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
+.post-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(61, 46, 44, .08); }
+.post-card-img { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--cream-2); }
+.post-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; transition: transform .6s; }
+.post-card:hover .post-card-img img { transform: scale(1.04); }
+.post-card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.post-card-body h2 { font-size: 1.45rem; margin: 0; line-height: 1.2; }
+.post-card-body h2 a:hover { color: var(--rose); }
+.post-card-body p { color: var(--brown-soft); margin: 0; font-size: 1.02rem; }
+.post-meta, .post-card-body .post-meta { font-family: var(--sans); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown-soft) !important; margin: 0; }
+.post-meta span, .post-meta a { color: var(--rose); }
+.post-more { margin-top: auto; padding-top: 8px; font-family: var(--sans); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--rose); }
+
+.post-header { padding: clamp(32px, 5vw, 64px) 0 0; }
+.post-narrow { max-width: 760px; }
+.post-back { font-family: var(--sans); font-size: .76rem; color: var(--brown-soft); display: inline-block; margin-bottom: 18px; }
+.post-back:hover { color: var(--rose); }
+.post-header h1 { font-size: clamp(2.2rem, 1.6rem + 2.6vw, 3.4rem); margin: 12px 0 14px; }
+.post-header .lead { max-width: none; }
+.post-cover { max-width: 1000px; margin-top: clamp(24px, 4vw, 40px); border-radius: 16px; overflow: hidden; padding: 0; aspect-ratio: 16 / 9; background: var(--cream-2); }
+.post-cover.is-vertical { aspect-ratio: 4 / 3; }
+.post-cover img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.post-body { padding-top: clamp(32px, 5vw, 56px); padding-bottom: clamp(24px, 4vw, 40px); }
+.post-body p, .post-body li { font-size: clamp(1.1rem, 1rem + .3vw, 1.25rem); line-height: 1.7; color: #4e3f3b; }
+.post-body h2 { font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem); margin: 1.6em 0 .5em; }
+.post-body ul { padding-left: 1.2em; margin: 0 0 1.2em; list-style: disc; display: grid; gap: 6px; }
+.post-body li::marker { color: var(--rose); }
+.post-body strong { color: var(--brown); font-weight: 600; }
+.post-body a { color: var(--rose); text-decoration: underline; text-underline-offset: 3px; }
+.post-cta { margin-top: clamp(36px, 5vw, 56px); background: var(--cream-2); border-radius: 16px; padding: clamp(26px, 4vw, 40px); text-align: center; }
+.post-cta .script { font-size: clamp(2rem, 1.5rem + 1.8vw, 2.8rem); margin: 0 0 6px; }
+.post-cta p { margin: 0 0 20px; }
+.post-cta a.btn { text-decoration: none; }
+.post-cta .btn-primary { color: #fff; }
+.post-cta .btn-outline { color: var(--brown); }
+.post-cta .btn-outline:hover { color: #fff; }
+.related { background: var(--cream-2); }
+.related .post-card-body h2 { font-size: 1.3rem; }
+
 /* ---------- Banner frase / CTA ---------- */
 .banner, .cta { position: relative; overflow: hidden; }
 .banner > img, .cta > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -595,6 +637,7 @@ body.dialog-open { overflow: hidden; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-info { order: -1; }
   .contact-info ul { grid-template-columns: 1fr 1fr; column-gap: 16px; }
+  .posts-grid { grid-template-columns: repeat(2, 1fr); }
   .session-hero-grid, .session-intro-grid { grid-template-columns: 1fr; }
   .session-hero-media { aspect-ratio: 4 / 3; order: -1; }
   .tips-inner { grid-template-columns: 1fr; }
@@ -634,6 +677,7 @@ body.dialog-open { overflow: hidden; }
   .cookie-actions .btn { flex: 1 1 0; padding: 8px 10px; }
 
   .gallery-grid { columns: 2; }
+  .posts-grid { grid-template-columns: 1fr; }
   .xmas-inner { flex-direction: column; align-items: flex-start; }
   .faq-item summary { font-size: 1.08rem; padding: 16px 52px 16px 18px; }
   .faq-answer { padding: 0 18px 18px; }
