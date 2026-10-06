@@ -46,7 +46,7 @@ Si en el futuro se añade Google Analytics, va dentro de `loadAnalytics()` en `j
 ## Fotos
 
 Las fotos reales están en `assets/img/fotos/` en WebP, en dos tamaños (`-800` y `-1600`).
-Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg`, vertical 4:5).
+Siguen con placeholder: tarjeta y página de Comuniones (`sesion-comuniones.svg`).
 
 ## Pendiente
 
@@ -54,6 +54,6 @@ Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg
 - [ ] Precio promo del Pack Crece Conmigo (ahora: botón "Pregunta por el precio promo")
 - [ ] Revisar respuestas de preguntas frecuentes (borrador) — sobre todo la tarta del smash cake
 - [ ] Fechas y precio de las mini sesiones de Navidad
-- [ ] Fotos de embarazo, smash cake, comuniones y de más sesiones para la galería
+- [ ] Fotos de comuniones
 - [ ] Colores de redes (verde agua y rosa): pendiente de decidir
 - [ ] Dirección completa del estudio (aviso legal y privacidad)

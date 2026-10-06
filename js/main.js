@@ -55,20 +55,26 @@
     li.addEventListener('mouseleave', () => { if (desktop.matches) set(false); });
   });
 
-  /* ---------- Portada en diapositivas ---------- */
+  /* ---------- Portada en diapositivas (fundido suave) ---------- */
   document.querySelectorAll('[data-slideshow]').forEach((box) => {
     const slides = [...box.querySelectorAll('.hero-slide')];
-    const dots = [...box.querySelectorAll('.hero-dot')];
     if (slides.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let i = 0, timer = null;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const go = (n) => {
-      slides[i].classList.remove('is-active'); dots[i]?.classList.remove('is-active');
-      i = (n + slides.length) % slides.length;
-      slides[i].classList.add('is-active'); dots[i]?.classList.add('is-active');
+    // precarga las siguientes fotos para que no haya saltos
+    slides.slice(1).forEach((s) => { s.loading = 'eager'; });
+    const go = () => {
+      const prev = slides[i];
+      const next = slides[(i + 1) % slides.length];
+      if (!next.complete || !next.naturalWidth) return; // espera a que cargue
+      slides.forEach((s) => s.classList.remove('is-prev'));
+      prev.classList.remove('is-active');
+      prev.classList.add('is-prev');
+      next.classList.add('is-active');
+      i = (i + 1) % slides.length;
+      setTimeout(() => prev.classList.remove('is-prev'), 1700);
     };
-    const start = () => { if (!reduce) { clearInterval(timer); timer = setInterval(() => go(i + 1), 5500); } };
-    dots.forEach((d, n) => d.addEventListener('click', () => { go(n); start(); }));
+    const start = () => { clearInterval(timer); timer = setInterval(go, 5500); };
     document.addEventListener('visibilitychange', () => { if (document.hidden) clearInterval(timer); else start(); });
     start();
   });
