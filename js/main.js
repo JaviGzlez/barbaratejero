@@ -43,6 +43,36 @@
   /* ---------- Año ---------- */
   document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
+  /* ---------- Submenú "Sesiones" ---------- */
+  document.querySelectorAll('.sub-toggle').forEach((btn) => {
+    const li = btn.closest('.has-sub');
+    const set = (open) => { btn.setAttribute('aria-expanded', String(open)); li.classList.toggle('is-open', open); };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); set(btn.getAttribute('aria-expanded') !== 'true'); });
+    document.addEventListener('click', (e) => { if (!li.contains(e.target)) set(false); });
+    li.addEventListener('keydown', (e) => { if (e.key === 'Escape') { set(false); btn.focus(); } });
+    const desktop = window.matchMedia('(min-width: 1041px) and (hover: hover)');
+    li.addEventListener('mouseenter', () => { if (desktop.matches) set(true); });
+    li.addEventListener('mouseleave', () => { if (desktop.matches) set(false); });
+  });
+
+  /* ---------- Portada en diapositivas ---------- */
+  document.querySelectorAll('[data-slideshow]').forEach((box) => {
+    const slides = [...box.querySelectorAll('.hero-slide')];
+    const dots = [...box.querySelectorAll('.hero-dot')];
+    if (slides.length < 2) return;
+    let i = 0, timer = null;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const go = (n) => {
+      slides[i].classList.remove('is-active'); dots[i]?.classList.remove('is-active');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('is-active'); dots[i]?.classList.add('is-active');
+    };
+    const start = () => { if (!reduce) { clearInterval(timer); timer = setInterval(() => go(i + 1), 5500); } };
+    dots.forEach((d, n) => d.addEventListener('click', () => { go(n); start(); }));
+    document.addEventListener('visibilitychange', () => { if (document.hidden) clearInterval(timer); else start(); });
+    start();
+  });
+
   /* =========================================================
      Cookies
      Ahora la web solo usa almacenamiento técnico. Si algún día
@@ -146,7 +176,7 @@
      mensaje y abre WhatsApp para que la persona lo envíe.
      ========================================================= */
   const WA_NUMBER = '34686806207';
-  const SESIONES = ['Embarazo', 'Newborn', 'Bebés / Smash cake', 'Familia', 'Comunión', 'Otra / No lo tengo claro'];
+  const SESIONES = ['Embarazo', 'Newborn', 'Seguimiento bebé', 'Smash cake', 'Familia', 'Comunión', 'Pack Crece Conmigo', 'Navidad', 'Otra / No lo tengo claro'];
   const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.09.81.83-3-.2-.31a8.2 8.2 0 1 1 6.94 3.83Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.15.16-.29.18-.54.06a6.7 6.7 0 0 1-3.36-2.94c-.25-.44.25-.4.72-1.34.08-.16.04-.3-.02-.43l-.76-1.83c-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 0 0-.66.31 2.77 2.77 0 0 0-.86 2.06 4.8 4.8 0 0 0 1 2.55 11 11 0 0 0 4.22 3.73c1.57.68 2.19.74 2.98.62.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>';
 
   let formCount = 0;
@@ -260,6 +290,8 @@
       if (typeof dialog.showModal !== 'function') return; // navegador muy antiguo: va directo a WhatsApp
       e.preventDefault();
       setMenu(false);
+      const sel = dialog.querySelector('select[name="sesion"]');
+      if (sel) sel.value = btn.dataset.sesion && SESIONES.includes(btn.dataset.sesion) ? btn.dataset.sesion : '';
       dialog.showModal();
       document.body.classList.add('dialog-open');
       setTimeout(() => dialog.querySelector('input[name="nombre"]')?.focus(), 60);

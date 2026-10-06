@@ -10,6 +10,8 @@ Sitio estático en HTML, CSS y JavaScript, sin dependencias ni `npm install`.
 ```
 ├── index.html                 Inicio
 ├── contacto.html              Formulario de WhatsApp + datos de contacto + mapa
+├── embarazo.html, newborn.html, seguimiento-bebe.html, smash-cake.html,
+│   familia.html, comuniones.html, navidad.html   Páginas de sesión (con preguntas frecuentes)
 ├── aviso-legal.html           Textos legales
 ├── politica-privacidad.html
 ├── politica-cookies.html
@@ -48,7 +50,10 @@ Siguen con placeholder: tarjetas de Embarazo, Bebés y Comuniones (`sesion-*.svg
 
 ## Pendiente
 
-- [ ] Dirección completa del estudio (aviso legal y privacidad: buscar `Jerez de la Frontera (Cádiz), España`)
-- [ ] Confirmar titular legal (`Bárbara Tejero Perea`)
-- [ ] Fotos de embarazo, bebés y comuniones
-- [ ] Páginas: Newborn, Embarazo, Bebés, Familia, Comuniones, Galería, Blog
+- [ ] Texto de "Sobre mí" (Bárbara lo envía en un documento)
+- [ ] Precio promo del Pack Crece Conmigo (ahora: botón "Pregunta por el precio promo")
+- [ ] Revisar respuestas de preguntas frecuentes (borrador) — sobre todo la tarta del smash cake
+- [ ] Fechas y precio de las mini sesiones de Navidad
+- [ ] Fotos de embarazo, smash cake, comuniones y de más sesiones para la galería
+- [ ] Colores de redes (verde agua y rosa): pendiente de decidir
+- [ ] Dirección completa del estudio (aviso legal y privacidad)
