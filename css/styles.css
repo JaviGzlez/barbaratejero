@@ -724,3 +724,7 @@ body.dialog-open { overflow: hidden; }
   .gallery-grid.gallery-even { grid-template-columns: repeat(2, 1fr); }
   .gallery-even .gallery-item:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
 }
+
+/* Botón de campaña de Navidad en portada */
+.btn-xmas { border-color: var(--wine); color: var(--wine); }
+.btn-xmas:hover { background: var(--wine); border-color: var(--wine); color: #fff; }
