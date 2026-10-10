@@ -715,3 +715,12 @@ body.dialog-open { overflow: hidden; }
   .sessions-grid { gap: 8px; }
   .btn { padding-inline: 20px; letter-spacing: .12em; }
 }
+
+/* ---------- Galería en cuadrícula uniforme (Navidad) ---------- */
+.gallery-grid.gallery-even { columns: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.4vw, 18px); }
+.gallery-even .gallery-item { margin: 0; aspect-ratio: 1 / 1; }
+.gallery-even .gallery-item img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+@media (max-width: 760px) {
+  .gallery-grid.gallery-even { grid-template-columns: repeat(2, 1fr); }
+  .gallery-even .gallery-item:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+}
